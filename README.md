@@ -93,11 +93,11 @@ Check the `/metadata` endpoint for the latest version information.
 
 ## 📝 License
 
-[Add your license information here]
+No Liscence
 
 ## 🤝 Contributing
 
-[Add contribution guidelines here]
+contribution guidelines coming soon
 
 ## 📧 Support
 
