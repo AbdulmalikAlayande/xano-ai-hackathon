@@ -122,7 +122,16 @@ echo ""
 
 # Example 7: POST /api_key/generate
 echo "Example 7: POST /api_key/generate"
-echo "Generate a new API key"
+echo "Generate a new API key (without email)"
+curl -X 'POST' \
+  "${BASE_URL}/api_key/generate" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+echo ""
+echo ""
+
+echo "Generate a new API key (with email)"
 curl -X 'POST' \
   "${BASE_URL}/api_key/generate" \
   -H 'accept: application/json' \
@@ -164,6 +173,9 @@ echo "=========================================="
 # GET /docs
 # curl -X 'GET' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/docs' -H 'accept: application/json'
 
-# POST /api_key/generate
+# POST /api_key/generate (without email)
+# curl -X 'POST' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/api_key/generate' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{}'
+
+# POST /api_key/generate (with email)
 # curl -X 'POST' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/api_key/generate' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"user_email": "user@example.com"}'
 
