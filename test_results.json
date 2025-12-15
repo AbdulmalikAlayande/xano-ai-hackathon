@@ -1,0 +1,41 @@
+{
+  "timestamp": "2025-12-15T16:25:13.644517",
+  "summary": {
+    "total": 25,
+    "passed": 19,
+    "failed": 1,
+    "warnings": 5,
+    "success_rate": 76.0
+  },
+  "passed": [
+    "GET /docs - Response structure",
+    "GET /docs - Main documentation links",
+    "GET /docs - Code example links",
+    "POST /api_key/generate - Without email",
+    "POST /api_key/generate - With email",
+    "GET /fees - Basic request",
+    "GET /fees - Category filter",
+    "GET /fees - Search filter",
+    "GET /fees/{id} - Valid ID (1)",
+    "GET /fees/{id} - Invalid ID (404)",
+    "GET /fees/search - Valid search (NIN)",
+    "GET /fees/search - Query too short",
+    "GET /fees/search - Missing query",
+    "GET /categories - Response structure",
+    "GET /categories - Basic request",
+    "GET /metadata - Response structure",
+    "GET /metadata - Statistics structure",
+    "GET /metadata - Documentation links",
+    "GET /metadata - Basic request"
+  ],
+  "failed": [
+    "GET /fees - Missing API key (error handling)"
+  ],
+  "warnings": [
+    "GET /fees - Pagination",
+    "GET /fees - Invalid API key (error handling)",
+    "GET /fees/{id} - Missing API key",
+    "Rate Limiting - Test setup",
+    "Rate Limiting - Manual verification needed"
+  ]
+}
