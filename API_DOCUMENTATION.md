@@ -863,13 +863,6 @@ print('Your API key:', data['api_key'])
 - Each API key has its own rate limit (100 requests/hour)
 - Keys can be deactivated but not deleted (for audit purposes)
 
-**Security Best Practices:**
-
-- Never commit API keys to version control
-- Store keys securely (environment variables, secret managers)
-- Rotate keys periodically
-- Use different keys for different environments (dev, staging, production)
-
 ---
 
 ## Error Response Standards
@@ -893,6 +886,7 @@ All error responses follow a consistent format:
 ### Common Error Scenarios
 
 **Missing API Key:**
+
 ```json
 {
   "code": "ERROR_CODE_ACCESS_DENIED",
@@ -901,6 +895,7 @@ All error responses follow a consistent format:
 ```
 
 **Invalid API Key:**
+
 ```json
 {
   "code": "ERROR_CODE_ACCESS_DENIED",
@@ -909,6 +904,7 @@ All error responses follow a consistent format:
 ```
 
 **Invalid Parameters:**
+
 ```json
 {
   "code": "ERROR_CODE_INPUT_ERROR",
@@ -917,6 +913,7 @@ All error responses follow a consistent format:
 ```
 
 **Resource Not Found:**
+
 ```json
 {
   "code": "ERROR_CODE_NOT_FOUND",
@@ -1007,4 +1004,3 @@ For issues, questions, or contributions, please refer to the project repository 
 
 **API Version:** 1.0.0  
 **Last Updated:** December 2024
-
