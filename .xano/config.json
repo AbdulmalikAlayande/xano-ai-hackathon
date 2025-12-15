@@ -1,0 +1,12 @@
+{
+  "instanceName": "xmlb-8xh6-ww1h",
+  "workspaceName": "Abdulmalik Alayande",
+  "workspaceId": 1,
+  "branch": "v1",
+  "paths": {
+    "functions": "functions",
+    "tables": "tables",
+    "apis": "apis",
+    "tasks": "tasks"
+  }
+}

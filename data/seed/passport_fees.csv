@@ -1,0 +1,11 @@
+subcategory_id,name,amount,currency,service_type,payment_code,description,meta,source_id
+SUB_ID_PASSPORT,Standard Passport 32 Pages (5-Year Validity),100000,NGN,Standard,,New or Renewal,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Standard Passport 64 Pages (10-Year Validity),200000,NGN,Standard,,New or Renewal,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Diaspora Passport 32 Pages (5-Year),150,USD,Diaspora,,Outside Nigeria,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Diaspora Passport 64 Pages (10-Year),230,USD,Diaspora,,Outside Nigeria,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Correction of Data (Admin Charge),30000,NGN,Correction,,Name/DoB/Data correction,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,ECOWAS Travel Certificate (Fresh),2600,NGN,ETC,,24-hour processing,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,ECOWAS Travel Certificate (Renewal),1300,NGN,ETC,,Renewal,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Contactless Biometric Passport 32 Pages,130,USD,Diaspora,,Mobile app enrollment,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Contactless Biometric Passport 64 Pages,230,USD,Diaspora,,Mobile app enrollment,"{}",SRC_ID_NIS
+SUB_ID_PASSPORT,Contactless Service Charge,100,USD,Service,,Additional fee,"{}",SRC_ID_NIS

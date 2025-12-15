@@ -1,0 +1,7 @@
+name,url,document_ref,notes,created_at,updated_at
+NIMC,"https://nimc.gov.ng","SERVICE_LEVEL_AGREEMENT_2025_.pdf","Official NIMC SLA document containing NIN modification fees.",,
+Nigerian Immigration Service (NIS),"https://immigration.gov.ng","SERVICE_LEVEL_AGREEMENT_2025_.pdf","Passport issuance/renewal fees sourced from NIS section of the SLA.",,
+NECO,"https://neco.gov.ng/exams","neco_fees_list","SSCE Internal, SSCE External, BECE, NCEE, NGE, and Other Fees from NECO official website.",,
+JAMB,"https://www.jamb.gov.ng/payment-Services","jamb_payment_services","All JAMB payment services and fees sourced from official JAMB portal.",,
+EKEDC (Ikeja Electric),"https://ekedp.com/tariff-plans","ekedc_tariff_page","Official tariff plan page used for electricity tariff categorizations.",,
+UNILAG,"https://acedhars.unilag.edu.ng/?page_id=154","unilag_accepance_page","Official UNILAG acceptance and postgraduate fee breakdown.",,

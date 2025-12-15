@@ -1,0 +1,6 @@
+subcategory_id,name,amount,currency,service_type,payment_code,description,meta,source_id
+SUB_ID_EKEDC,Band A Tariff (per kWh),225,NGN,kWh,,Current NERC approved,"{}",SRC_ID_EKEDC
+SUB_ID_EKEDC,Band B Tariff (per kWh),128,NGN,kWh,,Standard tariff,"{}",SRC_ID_EKEDC
+SUB_ID_EKEDC,Band C Tariff (per kWh),123,NGN,kWh,,Standard tariff,"{}",SRC_ID_EKEDC
+SUB_ID_EKEDC,Band D Tariff (per kWh),80,NGN,kWh,,Standard tariff,"{}",SRC_ID_EKEDC
+SUB_ID_EKEDC,Band E Tariff (per kWh),70,NGN,kWh,,Standard tariff,"{}",SRC_ID_EKEDC

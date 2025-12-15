@@ -1,0 +1,43 @@
+subcategory_id,name,amount,currency,service_type,payment_code,description,meta,source_id
+SUB_ID_NECO_SSCE_INT,SSCE Internal Registration Fee,30000,NGN,Internal,8201,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Late Registration Fee,5000,NGN,Internal,8410,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,4-Figure Table,500,NGN,Internal,8404,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Non Validation,10000,NGN,Internal,8436,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Result Checker Token,1000,NGN,Internal,,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Syllabus,2000,NGN,Internal,8405,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Photo Album,2700,NGN,Internal,8401,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Late CAS 3 Upload,40000,NGN,Internal,8411,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Unviable Centre Fee,70000,NGN,Internal,8407,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Remarking (Per Paper),20000,NGN,Internal,8412,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Fresh Accreditation (Public),150000,NGN,Internal,8423,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Re-Accreditation (Public),120000,NGN,Internal,8424,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Fresh Accreditation (Private),150000,NGN,Internal,8437,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Fresh Accreditation (Foreign),600000,NGN,Internal,8439,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Re-Accreditation (Foreign),500000,NGN,Internal,8440,, "{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_INT,Certificate Jacket,2500,NGN,Internal,8448,, "{}",SRC_ID_NECO
+
+SUB_ID_NECO_SSCE_EXT,SSCE External Registration Fee,30000,NGN,External,8202,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Late Registration Fee,5000,NGN,External,,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Walk-In Fee,43000,NGN,External,8414,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,4-Figure Table,500,NGN,External,84041,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Result Checker Token,1000,NGN,External,,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Syllabus,2000,NGN,External,84051,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Result Slip,1600,NGN,External,8415,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Remarking (Per Paper),20000,NGN,External,84121,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Certificate Collection,500,NGN,External,8403,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Non Validation,10000,NGN,External,8441,,"{}",SRC_ID_NECO
+SUB_ID_NECO_SSCE_EXT,Certificate Jacket,2500,NGN,External,8448,,"{}",SRC_ID_NECO
+
+SUB_ID_NECO_BECE,BECE Registration,13595,NGN,BECE,8203,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,BECE Late Registration,5000,NGN,BECE,8416,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,BECE Re-Sit,3750,NGN,BECE,8417,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,BECE Non Validation,10000,NGN,BECE,84361,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,BECE Result Checker,1000,NGN,BECE,,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,Syllabus,2000,NGN,BECE,8418,,"{}",SRC_ID_NECO
+SUB_ID_NECO_BECE,BECE Remarking (Per Paper),15000,NGN,BECE,8419,,"{}",SRC_ID_NECO
+
+SUB_ID_NECO_NCEE,NCEE Registration,5940,NGN,NCEE,8204,,"{}",SRC_ID_NECO
+SUB_ID_NECO_NCEE,NCEE Non Validation,4000,NGN,NCEE,83043,,"{}",SRC_ID_NECO
+
+SUB_ID_NECO_NGE,NGE Registration,5940,NGN,NGE,83041,,"{}",SRC_ID_NECO
+SUB_ID_NECO_NGE,NGE Non Validation,4000,NGN,NGE,83042,,"{}",SRC_ID_NECO

@@ -1,0 +1,712 @@
+# Nigerian Government Fees API Documentation
+
+## Introduction
+
+The Nigerian Government Fees API provides centralized access to official government fees and public utility costs in Nigeria. This API consolidates fee information from multiple government agencies and websites into a single, easy-to-use REST API.
+
+### Who is this for?
+
+- **Developers** building personal finance apps
+- **Fintech companies** integrating government fee information
+- **Government service aggregators** creating unified platforms
+- **Mobile app developers** building citizen services
+- **Chatbots and AI assistants** providing fee information
+
+### Base URL
+
+```
+https://xmlb-8xh6-ww1h.n7e.xano.io/api:public
+```
+
+### Authentication Method
+
+This API uses API key authentication via query parameters. All endpoints require an `api_key` parameter.
+
+---
+
+## Getting Started
+
+### How to Get an API Key
+
+API keys are generated using the `admin/generate_api_keys` function in Xano. Each API key follows the format:
+
+```
+nga_<32_random_characters>
+```
+
+Example: `nga_b6cf98a60bda43ba8cf54af9dbd87260`
+
+### Your First API Call
+
+Here's a simple example to get started:
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/categories?api_key=nga_your_api_key_here' \
+  -H 'accept: application/json'
+```
+
+### Common Use Cases
+
+1. **Search for specific fees**: Use `/fees/search` to find fees by name or description
+2. **Filter by category**: Use `/fees?category=identity` to get all identity-related fees
+3. **Get fee details**: Use `/fees/{id}` to get complete information about a specific fee
+4. **Browse categories**: Use `/categories` to see all available fee categories
+5. **Check API status**: Use `/metadata` to get API statistics and version information
+
+---
+
+## Authentication
+
+### API Key Format
+
+API keys must be provided as a query parameter named `api_key`. The key format is:
+
+- Prefix: `nga_`
+- Followed by: 32 random alphanumeric characters
+- Total length: 36 characters (including prefix)
+
+Example: `nga_b6cf98a60bda43ba8cf54af9dbd87260`
+
+### Authentication Method
+
+**Query Parameter** (Current Implementation):
+```
+?api_key=nga_your_api_key_here
+```
+
+**Bearer Token Support** (Optional):
+The API also accepts the "Bearer " prefix, which will be automatically stripped:
+```
+?api_key=Bearer nga_your_api_key_here
+```
+
+### Error Responses
+
+If authentication fails, you'll receive a 401 Unauthorized response:
+
+```json
+{
+  "code": "ERROR_CODE_ACCESS_DENIED",
+  "message": "Missing API Key. Please provide api_key query parameter."
+}
+```
+
+Or:
+
+```json
+{
+  "code": "ERROR_CODE_ACCESS_DENIED",
+  "message": "Invalid or inactive API Key."
+}
+```
+
+### Rate Limits
+
+Currently, rate limiting is not implemented. All authenticated requests are tracked via `request_count` and `last_request_at` fields in the `api_keys` table for future rate limiting implementation.
+
+---
+
+## Endpoints Documentation
+
+### GET /fees
+
+Returns a paginated list of government fees with optional filtering, sorting, and pagination.
+
+**HTTP Method:** `GET`
+
+**Path:** `/fees`
+
+**Authentication:** Not currently required (may be added in future versions)
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `category` | string | No | - | Filter by category name or slug (e.g., "identity", "education") |
+| `state` | string | No | - | Filter by state (searches in fee metadata) |
+| `search` | string | No | - | Search term to match against fee name and description |
+| `page` | integer | No | 1 | Page number for pagination (minimum: 1) |
+| `per_page` | integer | No | 20 | Number of results per page (minimum: 1, maximum: 100) |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/fees?category=identity&page=1&per_page=20&search=nin' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const params = new URLSearchParams({
+  category: 'identity',
+  page: 1,
+  per_page: 20,
+  search: 'nin'
+});
+
+const response = await fetch(`${BASE_URL}/fees?${params}`);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+params = {
+    'category': 'identity',
+    'page': 1,
+    'per_page': 20,
+    'search': 'nin'
+}
+
+response = requests.get(f'{BASE_URL}/fees', params=params)
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "NIN Enrolment (First Time)",
+      "amount": 0,
+      "currency": "NGN",
+      "service_type": "Standard",
+      "description": "Initial NIN enrollment is free",
+      "category_name": "Identity & Management",
+      "agency_name": "National Identity Management Commission",
+      "subcategory_name": "NIN",
+      "source_name": "NIMC",
+      "created_at": "2024-12-15T10:30:00+00:00",
+      "updated_at": "2024-12-15T10:30:00+00:00"
+    }
+  ],
+  "meta": {
+    "total": 87,
+    "limit": 20,
+    "offset": 0,
+    "page": 1
+  }
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request**: Invalid parameters (e.g., `page` < 1, `per_page` > 100, invalid category)
+  ```json
+  {
+    "code": "ERROR_CODE_INPUT_ERROR",
+    "message": "Category not found"
+  }
+  ```
+
+**Notes:**
+
+- Results are sorted by category name (ascending), then by fee name (ascending)
+- The `category` parameter accepts both category names and slugs
+- The `search` parameter searches in both fee name and description fields
+- The `state` parameter searches in the fee's metadata JSON field
+
+---
+
+### GET /fees/{id}
+
+Returns a single fee by ID with all relationships including subcategory, category, agency, and source.
+
+**HTTP Method:** `GET`
+
+**Path:** `/fees/{id}`
+
+**Authentication:** Required
+
+**Path Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The fee ID (minimum: 1) |
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `api_key` | string | Yes | Your API key for authentication |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/fees/1?api_key=nga_your_api_key_here' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const API_KEY = 'nga_your_api_key_here';
+const feeId = 1;
+
+const response = await fetch(`${BASE_URL}/fees/${feeId}?api_key=${API_KEY}`);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+API_KEY = 'nga_your_api_key_here'
+fee_id = 1
+
+response = requests.get(
+    f'{BASE_URL}/fees/{fee_id}',
+    params={'api_key': API_KEY}
+)
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "id": 1,
+  "name": "NIN Enrolment (First Time)",
+  "amount": 0,
+  "currency": "NGN",
+  "service_type": "Standard",
+  "description": "Initial NIN enrollment is free",
+  "subcategory_id": 1,
+  "source_id": 1,
+  "created_at": 1765659098109,
+  "updated_at": 1765659098109,
+  "subcategory": {
+    "id": 1,
+    "name": "NIN",
+    "slug": "nin",
+    "category_id": 1,
+    "category": {
+      "id": 1,
+      "name": "Identity & Management",
+      "slug": "identity",
+      "description": "Fees related to national identity systems such as NIN"
+    }
+  },
+  "source": {
+    "id": 1,
+    "name": "NIMC",
+    "url": "https://nimc.gov.ng",
+    "agency_id": 1,
+    "agency": {
+      "id": 1,
+      "name": "National Identity Management Commission",
+      "slug": "nimc",
+      "website": "https://nimc.gov.ng"
+    }
+  }
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request**: Invalid ID (e.g., ID < 1)
+- **401 Unauthorized**: Missing or invalid API key
+  ```json
+  {
+    "code": "ERROR_CODE_ACCESS_DENIED",
+    "message": "Missing API Key. Please provide api_key query parameter."
+  }
+  ```
+- **404 Not Found**: Fee with the specified ID does not exist
+  ```json
+  {
+    "code": "ERROR_CODE_NOT_FOUND",
+    "message": "Fee not found with ID 999"
+  }
+  ```
+
+**Notes:**
+
+- Returns complete fee information with nested relationships
+- If a fee has no subcategory or source, those fields will be `null`
+- All timestamps are in epoch milliseconds format
+
+---
+
+### GET /fees/search
+
+Searches fees by name and description using a query parameter. Returns up to 20 results with all relationships included.
+
+**HTTP Method:** `GET`
+
+**Path:** `/fees/search`
+
+**Authentication:** Required
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | Yes | Search query (minimum 2 characters). Searches in fee name and description |
+| `api_key` | string | Yes | Your API key for authentication |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/fees/search?q=passport&api_key=nga_your_api_key_here' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const API_KEY = 'nga_your_api_key_here';
+const searchQuery = 'passport';
+
+const response = await fetch(
+  `${BASE_URL}/fees/search?q=${encodeURIComponent(searchQuery)}&api_key=${API_KEY}`
+);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+API_KEY = 'nga_your_api_key_here'
+search_query = 'passport'
+
+response = requests.get(
+    f'{BASE_URL}/fees/search',
+    params={
+        'q': search_query,
+        'api_key': API_KEY
+    }
+)
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+[
+  {
+    "id": 20,
+    "name": "Standard Passport 32 Pages (5-Year Validity)",
+    "amount": 100000,
+    "currency": "NGN",
+    "service_type": "Standard",
+    "description": "New or Renewal",
+    "category_name": "Immigration",
+    "agency_name": "Nigeria Immigration Service",
+    "subcategory_name": "Passport",
+    "source_name": "Nigerian Immigration Service (NIS)"
+  }
+]
+```
+
+**Error Responses:**
+
+- **400 Bad Request**: Search query is less than 2 characters
+  ```json
+  {
+    "code": "ERROR_CODE_INPUT_ERROR",
+    "message": "Search query 'q' must be at least 2 characters long"
+  }
+  ```
+- **401 Unauthorized**: Missing or invalid API key
+
+**Notes:**
+
+- Returns a maximum of 20 results
+- Results are sorted by fee name (ascending)
+- Search is case-insensitive and matches partial strings
+- Searches both `name` and `description` fields
+
+---
+
+### GET /categories
+
+Returns a list of all categories with fee counts for each category.
+
+**HTTP Method:** `GET`
+
+**Path:** `/categories`
+
+**Authentication:** Required
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `api_key` | string | Yes | Your API key for authentication |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/categories?api_key=nga_your_api_key_here' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const API_KEY = 'nga_your_api_key_here';
+
+const response = await fetch(`${BASE_URL}/categories?api_key=${API_KEY}`);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+API_KEY = 'nga_your_api_key_here'
+
+response = requests.get(
+    f'{BASE_URL}/categories',
+    params={'api_key': API_KEY}
+)
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+[
+  {
+    "id": 1,
+    "display_name": "Identity & Management",
+    "description": "Fees related to national identity systems such as NIN",
+    "fee_count": 19
+  },
+  {
+    "id": 2,
+    "display_name": "Immigration",
+    "description": "Passport and visa related fees",
+    "fee_count": 10
+  },
+  {
+    "id": 3,
+    "display_name": "Education",
+    "description": "NECO, JAMB and related examination fees",
+    "fee_count": 45
+  }
+]
+```
+
+**Error Responses:**
+
+- **401 Unauthorized**: Missing or invalid API key
+
+**Notes:**
+
+- Categories are returned in the order they appear in the database
+- Fee counts only include fees that have valid subcategory links
+- Categories with zero fees will still appear in the list with `fee_count: 0`
+
+---
+
+### GET /metadata
+
+Returns API statistics and metadata including total counts, API version, and last database update timestamp.
+
+**HTTP Method:** `GET`
+
+**Path:** `/metadata`
+
+**Authentication:** Required
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `api_key` | string | Yes | Your API key for authentication |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/metadata?api_key=nga_your_api_key_here' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const API_KEY = 'nga_your_api_key_here';
+
+const response = await fetch(`${BASE_URL}/metadata?api_key=${API_KEY}`);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+API_KEY = 'nga_your_api_key_here'
+
+response = requests.get(
+    f'{BASE_URL}/metadata',
+    params={'api_key': API_KEY}
+)
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "api_version": "1.0.0",
+  "statistics": {
+    "total_fees": 87,
+    "total_categories": 6,
+    "total_agencies": 6,
+    "total_subcategories": 12,
+    "total_sources": 6
+  },
+  "last_database_update": 1765659098109,
+  "generated_at": 1765766813347
+}
+```
+
+**Error Responses:**
+
+- **401 Unauthorized**: Missing or invalid API key
+
+**Notes:**
+
+- `last_database_update` is the timestamp of the most recently updated fee record
+- `generated_at` is the timestamp when the metadata was generated
+- All timestamps are in epoch milliseconds format
+- Statistics are real-time counts from the database
+
+---
+
+## Error Response Standards
+
+All error responses follow a consistent format:
+
+```json
+{
+  "code": "ERROR_CODE_TYPE",
+  "message": "Human-readable error message"
+}
+```
+
+### Error Types
+
+- **ERROR_CODE_INPUT_ERROR** (400): Invalid input parameters or validation failures
+- **ERROR_CODE_ACCESS_DENIED** (401): Authentication failures (missing or invalid API key)
+- **ERROR_CODE_NOT_FOUND** (404): Resource not found (e.g., fee ID doesn't exist)
+- **ERROR_CODE_FATAL** (500): Internal server errors
+
+### Common Error Scenarios
+
+**Missing API Key:**
+```json
+{
+  "code": "ERROR_CODE_ACCESS_DENIED",
+  "message": "Missing API Key. Please provide api_key query parameter."
+}
+```
+
+**Invalid API Key:**
+```json
+{
+  "code": "ERROR_CODE_ACCESS_DENIED",
+  "message": "Invalid or inactive API Key."
+}
+```
+
+**Invalid Parameters:**
+```json
+{
+  "code": "ERROR_CODE_INPUT_ERROR",
+  "message": "Search query 'q' must be at least 2 characters long"
+}
+```
+
+**Resource Not Found:**
+```json
+{
+  "code": "ERROR_CODE_NOT_FOUND",
+  "message": "Fee not found with ID 999"
+}
+```
+
+---
+
+## Response Format Standards
+
+### Pagination
+
+Endpoints that support pagination return metadata in the following format:
+
+```json
+{
+  "items": [...],
+  "meta": {
+    "total": 87,
+    "limit": 20,
+    "offset": 0,
+    "page": 1
+  }
+}
+```
+
+- `total`: Total number of items matching the query
+- `limit`: Number of items per page (same as `per_page` parameter)
+- `offset`: Current offset (calculated as `(page - 1) * per_page`)
+- `page`: Current page number
+
+### Timestamps
+
+Timestamps are returned in ISO 8601 format (for formatted responses) or epoch milliseconds (for raw database responses):
+
+- Formatted: `"2024-12-15T10:30:00+00:00"`
+- Raw: `1765659098109`
+
+### Currency Formatting
+
+Amounts are returned as decimal numbers. Currency codes follow ISO 4217 standards (e.g., `NGN`, `USD`).
+
+---
+
+## Best Practices
+
+1. **Always include error handling** in your integration
+2. **Cache category lists** - they don't change frequently
+3. **Use pagination** for large result sets
+4. **Store API keys securely** - never commit them to version control
+5. **Handle rate limits** gracefully (when implemented)
+6. **Use appropriate HTTP status codes** to determine response handling
+
+---
+
+## Support
+
+For issues, questions, or contributions, please refer to the project repository or contact the API maintainers.
+
+**API Version:** 1.0.0  
+**Last Updated:** December 2024
+

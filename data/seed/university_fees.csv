@@ -1,0 +1,4 @@
+subcategory_id,name,amount,currency,service_type,payment_code,description,meta,source_id
+SUB_ID_UNILAG,UNILAG Acceptance Fee,62500,NGN,Acceptance,,,"{}",SRC_ID_UNILAG
+SUB_ID_UNILAG,UNILAG Application Fee,25000,NGN,Application,,,"{}",SRC_ID_UNILAG
+SUB_ID_UNILAG,UNILAG Prospectus Fee,5000,NGN,Prospectus,,,"{}",SRC_ID_UNILAG

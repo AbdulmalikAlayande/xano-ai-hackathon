@@ -1,0 +1,22 @@
+subcategory_id,name,amount,currency,service_type,payment_code,description,meta,source_id
+SUB_ID_JAMB,Condonement of Illegal Admission,10000,NGN,JAMB,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Application for Transfer,7000,NGN,JAMB,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Change of Admission Letter,5000,NGN,JAMB,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Fresh Admission Letter,5000,NGN,JAMB,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,UTME Registration,3500,NGN,UTME,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,UTME De-Registration,3500,NGN,UTME,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Open University Registration,3500,NGN,OU,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Distance Learning Registration,3500,NGN,DL,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Sandwich Registration,10000,NGN,Sandwich,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Part-time Registration,10000,NGN,Part-Time,,,"{}",SRC_ID_JAMB
+
+SUB_ID_JAMB,Data Correction - Institution/Course,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Data Correction - Name,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Data Correction - Date of Birth,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Data Correction - State/LGA,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Data Correction - Gender,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Data Correction - A Level Qualification,2500,NGN,Correction,,,"{}",SRC_ID_JAMB
+
+SUB_ID_JAMB,JAMB Result Slip,1000,NGN,Slip,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,Retrieve Registration Number,1000,NGN,Retrieval,,,"{}",SRC_ID_JAMB
+SUB_ID_JAMB,JAMB Admission Letter,1000,NGN,Admission,,,"{}",SRC_ID_JAMB

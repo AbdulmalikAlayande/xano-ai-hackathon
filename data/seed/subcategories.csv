@@ -1,0 +1,12 @@
+category_id,name,slug,description,created_at,updated_at
+2,NIN,nin,National Identification Number fees
+3,Passport,passport,Nigerian passport issuance and renewal
+3,Visa Fees,visa,Country-specific visa charges (Appendix I)
+4,NECO SSCE Internal,neco-ssce-internal,Senior school certificate exam (internal)
+4,NECO SSCE External,neco-ssce-external,Senior school certificate exam (external)
+4,NECO BECE,neco-bece,Junior exam fees
+4,NECO NCEE,neco-ncee,Common entrance exam fees
+4,NECO NGE,neco-nge,Gifted exam fees
+4,JAMB,jamb,JAMB UTME, DE and service fees
+5,IKEDC Tariff,ikedc-tariff,Ikeja Electric tariff structure
+5,EKEDC Tariff,ekedc-tariff,Eko Electric tariff structure
