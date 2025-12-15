@@ -27,7 +27,7 @@ Ready-to-use code examples in multiple languages:
 
 ## 🔑 Authentication
 
-All endpoints require an API key passed as a query parameter:
+All endpoints require an API key passed as a query parameter except the `/api-key/generate` and `/docs` endpoints:
 
 ```
 ?api_key=nga_your_api_key_here
