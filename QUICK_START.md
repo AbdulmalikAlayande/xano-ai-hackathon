@@ -14,15 +14,38 @@ Get up and running with the Nigerian Government Fees API in 5 minutes.
 
 ## Step 1: Get Your API Key
 
-API keys are generated using the `admin/generate_api_keys` function in Xano. Each key follows this format:
+### Option 1: Generate a New API Key
 
+You can generate a new API key using the API itself:
+
+```bash
+curl -X 'POST' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/api_key/generate' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_email": "your-email@example.com"
+  }'
 ```
-nga_<32_random_characters>
+
+The response will include your new API key:
+```json
+{
+  "success": true,
+  "api_key": "nga_b6cf98a60bda43ba8cf54af9dbd87260",
+  "message": "API key generated successfully. Please save this key as it provides access to the API."
+}
 ```
+
+**Important:** Save this key immediately - you cannot retrieve it later!
+
+### Option 2: Use Pre-generated Test Keys
+
+API keys can also be generated using the `admin/generate_api_keys` function in Xano (for administrators).
+
+**API Key Format:** `nga_` + 32 random characters
 
 Example: `nga_b6cf98a60bda43ba8cf54af9dbd87260`
-
-**Note:** If you don't have access to generate keys, contact the API administrator.
 
 ---
 

@@ -48,6 +48,49 @@ query "fees/search" verb=GET {
       error = "Invalid or inactive API Key."
     }
   
+    // ===== RATE LIMITING BLOCK START =====
+    // This entire block can be removed to disable rate limiting
+    // Rate limit: 100 requests per hour per API key
+  
+    // Calculate 1 hour ago timestamp
+    var $one_hour_ago {
+      value = now
+        |transform_timestamp:"-1 hour":"UTC"
+    }
+  
+    // Check if reset is needed (last_reset_at is null or >1 hour ago)
+    var $needs_reset {
+      value = ($key_record.last_reset_at == null) || ($key_record.last_reset_at < $one_hour_ago)
+    }
+  
+    // Reset count if needed
+    conditional {
+      if ($needs_reset) {
+        db.edit api_keys {
+          field_name = "id"
+          field_value = $key_record.id
+          data = {request_count: 0, last_reset_at: now}
+        }
+      
+        // Update key_record for rate limit check
+        var.update $key_record {
+          value = $key_record|set:"request_count":0
+        }
+      }
+    }
+  
+    // Check if rate limit exceeded (after potential reset)
+    var $current_count {
+      value = $key_record.request_count|first_notnull:0
+    }
+  
+    precondition ($current_count < 100) {
+      error_type = "accessdenied"
+      error = "Rate limit exceeded. Maximum 100 requests per hour. Please try again later."
+    }
+  
+    // ===== RATE LIMITING BLOCK END =====
+  
     // Increment request_count and update last_request_at
     db.edit api_keys {
       field_name = "id"

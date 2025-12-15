@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "nigerian-fees-api-2024",
+		"name": "Nigerian Government Fees API",
+		"description": "Complete API collection for Nigerian Government Fees API. This collection includes all 7 endpoints with authentication, query parameters, and example requests.\n\n**Base URL:** `https://xmlb-8xh6-ww1h.n7e.xano.io/api:public`\n\n**Authentication:** Most endpoints require an `api_key` query parameter. GET /docs and POST /api_key/generate do not require authentication.\n\n**API Key Format:** `nga_` + 32 random characters\n\n**Rate Limit:** 100 requests per hour per API key",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /fees",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/fees?category=&state=&search=&page=1&per_page=20&api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"fees"
+					],
+					"query": [
+						{
+							"key": "category",
+							"value": "",
+							"description": "Filter by category name or slug (e.g., 'identity', 'education')",
+							"disabled": true
+						},
+						{
+							"key": "state",
+							"value": "",
+							"description": "Filter by state (searches in fee metadata)",
+							"disabled": true
+						},
+						{
+							"key": "search",
+							"value": "",
+							"description": "Search term to match against fee name and description",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Page number for pagination (minimum: 1)",
+							"disabled": false
+						},
+						{
+							"key": "per_page",
+							"value": "20",
+							"description": "Number of results per page (minimum: 1, maximum: 100)",
+							"disabled": false
+						},
+						{
+							"key": "api_key",
+							"value": "{{api_key}}",
+							"description": "API key for authentication (required)",
+							"disabled": false
+						}
+					]
+				},
+				"description": "Returns a paginated list of government fees with optional filtering, sorting, and pagination.\n\n**Query Parameters:**\n- `category` (optional, string) - Filter by category name or slug\n- `state` (optional, string) - Filter by state\n- `search` (optional, string) - Search term to match against fee name and description\n- `page` (optional, int, default: 1) - Page number for pagination\n- `per_page` (optional, int, default: 20, max: 100) - Number of results per page\n- `api_key` (required, string) - API key for authentication\n\n**Example Responses:**\n- **200 OK:** Returns paginated list of fees with metadata\n- **400 Bad Request:** Invalid parameters (e.g., invalid category)\n- **401 Unauthorized:** Missing or invalid API key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /fees/{id}",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/fees/{{fee_id}}?api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"fees",
+						"{{fee_id}}"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{api_key}}",
+							"description": "API key for authentication (required)",
+							"disabled": false
+						}
+					]
+				},
+				"description": "Returns a single fee by ID with all relationships including subcategory, category, agency, and source.\n\n**Path Parameters:**\n- `id` (required, int, minimum: 1) - The fee ID\n\n**Query Parameters:**\n- `api_key` (required, string) - API key for authentication\n\n**Example Responses:**\n- **200 OK:** Returns single fee object with nested relationships\n- **400 Bad Request:** Invalid ID (e.g., ID < 1)\n- **401 Unauthorized:** Missing or invalid API key\n- **404 Not Found:** Fee with the specified ID does not exist"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /fees/search",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/fees/search?q=NIN&api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"fees",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "NIN",
+							"description": "Search query (required, minimum 2 characters). Searches in fee name and description",
+							"disabled": false
+						},
+						{
+							"key": "api_key",
+							"value": "{{api_key}}",
+							"description": "API key for authentication (required)",
+							"disabled": false
+						}
+					]
+				},
+				"description": "Searches fees by name and description using a query parameter. Returns up to 20 results with all relationships included.\n\n**Query Parameters:**\n- `q` (required, string, minimum: 2 characters) - Search query. Searches in fee name and description\n- `api_key` (required, string) - API key for authentication\n\n**Example Responses:**\n- **200 OK:** Returns array of fee objects matching the search (max 20 results)\n- **400 Bad Request:** Search query is less than 2 characters\n- **401 Unauthorized:** Missing or invalid API key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/categories?api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"categories"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{api_key}}",
+							"description": "API key for authentication (required)",
+							"disabled": false
+						}
+					]
+				},
+				"description": "Returns a list of all categories with fee counts for each category.\n\n**Query Parameters:**\n- `api_key` (required, string) - API key for authentication\n\n**Example Responses:**\n- **200 OK:** Returns array of category objects with fee counts\n- **401 Unauthorized:** Missing or invalid API key"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /metadata",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/metadata?api_key={{api_key}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "{{api_key}}",
+							"description": "API key for authentication (required)",
+							"disabled": false
+						}
+					]
+				},
+				"description": "Returns API statistics and metadata including total counts, API version, and last database update timestamp.\n\n**Query Parameters:**\n- `api_key` (required, string) - API key for authentication\n\n**Example Responses:**\n- **200 OK:** Returns metadata object with statistics and version information\n- **401 Unauthorized:** Missing or invalid API key\n\n**Response includes:**\n- API version\n- Total fees, categories, agencies, subcategories, sources counts\n- Last database update timestamp\n- Generated at timestamp\n- Documentation links"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /docs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/docs",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"docs"
+					]
+				},
+				"description": "Returns links to all API documentation including GitHub repository, main documentation files, quick start guide, data sources, and code examples.\n\n**Query Parameters:** None\n\n**Authentication:** Not required (public endpoint)\n\n**Example Responses:**\n- **200 OK:** Returns documentation links object with repository, main documentation, code examples, and raw links\n\n**Response includes:**\n- Repository URL\n- Main documentation links (API reference, quick start, data sources, README)\n- Code example links (JavaScript, Python, cURL)\n- Raw file links for direct access"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api_key/generate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_email\": \"user@example.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api_key/generate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api_key",
+						"generate"
+					]
+				},
+				"description": "Generates a new API key for accessing the API. The generated key follows the format `nga_` + 32 random alphanumeric characters.\n\n**Request Body Parameters:**\n- `user_email` (optional, string/email) - Optional email address to associate with the API key\n\n**Authentication:** Not required (public endpoint for key generation)\n\n**Example Responses:**\n- **200 OK:** Returns success status and the generated API key\n- **400 Bad Request:** Invalid email format (if provided)\n\n**Important:** Save the API key immediately after generation - it cannot be retrieved later!\n\n**Response includes:**\n- success: true\n- api_key: The generated API key\n- message: Success message"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://xmlb-8xh6-ww1h.n7e.xano.io/api:public",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "nga_your_api_key_here",
+			"type": "string"
+		},
+		{
+			"key": "fee_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
+

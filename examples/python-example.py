@@ -1,7 +1,7 @@
 """
 Nigerian Government Fees API - Python Examples
 
-This file contains complete examples for all 5 API endpoints using the requests library.
+This file contains complete examples for all 7 API endpoints using the requests library.
 Replace 'nga_your_api_key_here' with your actual API key.
 
 Installation:
@@ -382,6 +382,74 @@ def complete_workflow():
 
 
 # Run the complete workflow
+def get_docs():
+    """
+    Example 6: GET /docs
+    Get documentation links (no authentication required).
+    
+    Returns:
+        dict: Documentation links object
+    """
+    try:
+        response = requests.get(f'{BASE_URL}/docs')
+        response.raise_for_status()
+        data = response.json()
+        
+        print('Documentation Links:')
+        print('Repository:', data['repository'])
+        print('API Reference:', data['main_documentation']['api_reference'])
+        print('Quick Start:', data['main_documentation']['quick_start'])
+        
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f'Error fetching docs: {e}')
+        raise
+
+
+# Usage example:
+# get_docs()
+
+
+def generate_api_key(user_email=None):
+    """
+    Example 7: POST /api_key/generate
+    Generate a new API key.
+    
+    Args:
+        user_email: Optional email address to associate with the API key
+        
+    Returns:
+        dict: Response containing the generated API key
+    """
+    try:
+        body = {}
+        if user_email:
+            body['user_email'] = user_email
+        
+        response = requests.post(
+            f'{BASE_URL}/api_key/generate',
+            json=body,
+            headers={'Accept': 'application/json'}
+        )
+        response.raise_for_status()
+        data = response.json()
+        
+        print('API Key Generated Successfully!')
+        print('API Key:', data['api_key'])
+        print('Message:', data['message'])
+        print('⚠️  IMPORTANT: Save this key immediately - you cannot retrieve it later!')
+        
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f'Error generating API key: {e}')
+        raise
+
+
+# Usage examples:
+# generate_api_key()  # Generate without email
+# generate_api_key('user@example.com')  # Generate with email
+
+
 if __name__ == '__main__':
     # Uncomment to run examples:
     # complete_workflow()
@@ -392,5 +460,7 @@ if __name__ == '__main__':
     # get_fee_by_id(1)
     # get_fees(category='identity', per_page=5)
     # get_metadata()
+    # get_docs()
+    # generate_api_key('user@example.com')
     pass
 

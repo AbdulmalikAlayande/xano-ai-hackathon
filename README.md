@@ -23,16 +23,19 @@ Ready-to-use code examples in multiple languages:
 - **[JavaScript Examples](./examples/javascript-example.js)** - Complete examples using Fetch API
 - **[Python Examples](./examples/python-example.py)** - Complete examples using requests library
 - **[cURL Examples](./examples/curl-examples.sh)** - Command-line examples for testing
+- **[Postman Collection](./examples/nigerian-fees-api.postman_collection.json)** - Import into Postman for easy testing
 
 ## 🔑 Authentication
 
-All endpoints (except `/fees`) require an API key passed as a query parameter:
+All endpoints require an API key passed as a query parameter:
 
 ```
 ?api_key=nga_your_api_key_here
 ```
 
 API keys follow the format: `nga_` + 32 random characters
+
+**Rate Limit:** 100 requests per hour per API key
 
 ## 📡 Available Endpoints
 
@@ -41,6 +44,8 @@ API keys follow the format: `nga_` + 32 random characters
 3. **GET /fees/search** - Search fees by name and description
 4. **GET /categories** - Get all categories with fee counts
 5. **GET /metadata** - Get API statistics and version information
+6. **GET /docs** - Get documentation links (no authentication required)
+7. **POST /api_key/generate** - Generate a new API key (no authentication required)
 
 See [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for complete endpoint details.
 

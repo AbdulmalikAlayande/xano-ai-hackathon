@@ -1,7 +1,7 @@
 /**
  * Nigerian Government Fees API - JavaScript Examples
  * 
- * This file contains complete examples for all 5 API endpoints using the Fetch API.
+ * This file contains complete examples for all 7 API endpoints using the Fetch API.
  * Replace 'nga_your_api_key_here' with your actual API key.
  */
 
@@ -313,6 +313,68 @@ async function completeWorkflow() {
 // Run the complete workflow
 // completeWorkflow();
 
+/**
+ * Example 6: GET /docs
+ * Get documentation links (no authentication required)
+ */
+async function getDocs() {
+  try {
+    const response = await fetch(`${BASE_URL}/docs`);
+    const data = await handleResponse(response);
+    
+    console.log('Documentation Links:');
+    console.log('Repository:', data.repository);
+    console.log('API Reference:', data.main_documentation.api_reference);
+    console.log('Quick Start:', data.main_documentation.quick_start);
+    
+    return data;
+  } catch (error) {
+    console.error('Error fetching docs:', error.message);
+    throw error;
+  }
+}
+
+// Usage example:
+// getDocs();
+
+/**
+ * Example 7: POST /api_key/generate
+ * Generate a new API key
+ */
+async function generateApiKey(userEmail = null) {
+  try {
+    const body = {};
+    if (userEmail) {
+      body.user_email = userEmail;
+    }
+    
+    const response = await fetch(`${BASE_URL}/api_key/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    
+    const data = await handleResponse(response);
+    
+    console.log('API Key Generated Successfully!');
+    console.log('API Key:', data.api_key);
+    console.log('Message:', data.message);
+    console.log('⚠️  IMPORTANT: Save this key immediately - you cannot retrieve it later!');
+    
+    return data;
+  } catch (error) {
+    console.error('Error generating API key:', error.message);
+    throw error;
+  }
+}
+
+// Usage examples:
+// generateApiKey(); // Generate without email
+// generateApiKey('user@example.com'); // Generate with email
+
 // Export functions for use in other modules (if using modules)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -323,7 +385,9 @@ if (typeof module !== 'undefined' && module.exports) {
     getMetadata,
     getAllFees,
     getFeesByCategory,
-    completeWorkflow
+    completeWorkflow,
+    getDocs,
+    generateApiKey
   };
 }
 

@@ -111,6 +111,28 @@ curl -X 'GET' \
 echo ""
 echo ""
 
+# Example 6: GET /docs
+echo "Example 6: GET /docs"
+echo "Get documentation links (no authentication required)"
+curl -X 'GET' \
+  "${BASE_URL}/docs" \
+  -H 'accept: application/json'
+echo ""
+echo ""
+
+# Example 7: POST /api_key/generate
+echo "Example 7: POST /api_key/generate"
+echo "Generate a new API key"
+curl -X 'POST' \
+  "${BASE_URL}/api_key/generate" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_email": "user@example.com"
+  }'
+echo ""
+echo ""
+
 echo "=========================================="
 echo "Examples Complete"
 echo "=========================================="
@@ -138,4 +160,10 @@ echo "=========================================="
 
 # GET /metadata
 # curl -X 'GET' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/metadata?api_key=nga_your_api_key_here' -H 'accept: application/json'
+
+# GET /docs
+# curl -X 'GET' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/docs' -H 'accept: application/json'
+
+# POST /api_key/generate
+# curl -X 'POST' 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/api_key/generate' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"user_email": "user@example.com"}'
 

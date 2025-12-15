@@ -103,7 +103,65 @@ Or:
 
 ### Rate Limits
 
-Currently, rate limiting is not implemented. All authenticated requests are tracked via `request_count` and `last_request_at` fields in the `api_keys` table for future rate limiting implementation.
+**Rate Limit:** 100 requests per hour per API key
+
+#### How Rate Limiting Works
+
+Rate limiting uses a **sliding window** approach:
+
+1. **Initial Request:** When you make your first request, the system records the timestamp in `last_reset_at`
+2. **Counting:** Each subsequent request increments the `request_count` for your API key
+3. **Reset:** After 1 hour has passed since `last_reset_at`, the count automatically resets to 0
+4. **Limit Enforcement:** If `request_count >= 100` before the reset, subsequent requests are blocked
+
+#### Rate Limit Behavior
+
+- **Window:** 1 hour (3600 seconds)
+- **Limit:** 100 requests per window
+- **Reset:** Automatic after 1 hour from first request in the window
+- **Tracking:** Per API key (each key has its own limit)
+
+#### Rate Limit Exceeded Response
+
+When the rate limit is exceeded, the API returns:
+
+**HTTP Status:** 401 Unauthorized
+
+```json
+{
+  "code": "ERROR_CODE_ACCESS_DENIED",
+  "message": "Rate limit exceeded. Maximum 100 requests per hour. Please try again later."
+}
+```
+
+#### Checking Your Rate Limit Status
+
+Currently, there's no dedicated endpoint to check your current rate limit status. However, you can:
+
+1. Monitor the `request_count` field in the `api_keys` table (if you have database access)
+2. Track requests in your application code
+3. Use the error response to know when you've hit the limit
+
+#### Best Practices
+
+- **Batch Requests:** Combine multiple operations into single requests when possible
+- **Cache Responses:** Cache frequently accessed data (like categories) to reduce API calls
+- **Monitor Usage:** Track your request count in your application
+- **Plan Ahead:** For high-volume applications, consider requesting multiple API keys
+
+#### Rate Limit Reset
+
+The rate limit resets automatically when:
+- 1 hour has passed since `last_reset_at` timestamp
+- The next request after the reset will start a new counting window
+
+**Example Timeline:**
+- 10:00 AM - First request (count: 1, reset_at: 10:00 AM)
+- 10:30 AM - 50th request (count: 50, reset_at: 10:00 AM)
+- 11:00 AM - 100th request (count: 100, reset_at: 10:00 AM)
+- 11:01 AM - 101st request → **BLOCKED** (count: 100, reset_at: 10:00 AM)
+- 11:01 AM - Reset occurs (count: 0, reset_at: 11:01 AM)
+- 11:01 AM - Next request succeeds (count: 1, reset_at: 11:01 AM)
 
 ---
 
@@ -117,7 +175,7 @@ Returns a paginated list of government fees with optional filtering, sorting, an
 
 **Path:** `/fees`
 
-**Authentication:** Not currently required (may be added in future versions)
+**Authentication:** Required
 
 **Query Parameters:**
 
@@ -128,12 +186,13 @@ Returns a paginated list of government fees with optional filtering, sorting, an
 | `search` | string | No | - | Search term to match against fee name and description |
 | `page` | integer | No | 1 | Page number for pagination (minimum: 1) |
 | `per_page` | integer | No | 20 | Number of results per page (minimum: 1, maximum: 100) |
+| `api_key` | string | Yes | - | API key for authentication |
 
 **Request Example (cURL):**
 
 ```bash
 curl -X 'GET' \
-  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/fees?category=identity&page=1&per_page=20&search=nin' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/fees?category=identity&page=1&per_page=20&search=nin&api_key=nga_your_api_key_here' \
   -H 'accept: application/json'
 ```
 
@@ -141,11 +200,13 @@ curl -X 'GET' \
 
 ```javascript
 const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+const API_KEY = 'nga_your_api_key_here';
 const params = new URLSearchParams({
   category: 'identity',
   page: 1,
   per_page: 20,
-  search: 'nin'
+  search: 'nin',
+  api_key: API_KEY
 });
 
 const response = await fetch(`${BASE_URL}/fees?${params}`);
@@ -158,11 +219,13 @@ const data = await response.json();
 import requests
 
 BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+API_KEY = 'nga_your_api_key_here'
 params = {
     'category': 'identity',
     'page': 1,
     'per_page': 20,
-    'search': 'nin'
+    'search': 'nin',
+    'api_key': API_KEY
 }
 
 response = requests.get(f'{BASE_URL}/fees', params=params)
@@ -205,6 +268,13 @@ data = response.json()
   {
     "code": "ERROR_CODE_INPUT_ERROR",
     "message": "Category not found"
+  }
+  ```
+- **401 Unauthorized**: Missing or invalid API key
+  ```json
+  {
+    "code": "ERROR_CODE_ACCESS_DENIED",
+    "message": "Missing API Key. Please provide api_key query parameter."
   }
   ```
 
@@ -585,7 +655,19 @@ data = response.json()
     "total_sources": 6
   },
   "last_database_update": 1765659098109,
-  "generated_at": 1765766813347
+  "generated_at": 1765766813347,
+  "documentation": {
+    "repository": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon",
+    "api_reference": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/API_DOCUMENTATION.md",
+    "quick_start": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/QUICK_START.md",
+    "data_sources": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/DATA_SOURCES.md",
+    "readme": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/README.md",
+    "examples": {
+      "javascript": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/javascript-example.js",
+      "python": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/python-example.py",
+      "curl": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/curl-examples.sh"
+    }
+  }
 }
 ```
 
@@ -599,6 +681,194 @@ data = response.json()
 - `generated_at` is the timestamp when the metadata was generated
 - All timestamps are in epoch milliseconds format
 - Statistics are real-time counts from the database
+- The `documentation` object provides direct links to all API documentation and code examples on GitHub
+
+---
+
+### GET /docs
+
+Returns links to all API documentation including GitHub repository, main documentation files, quick start guide, data sources, and code examples.
+
+**HTTP Method:** `GET`
+
+**Path:** `/docs`
+
+**Authentication:** Not required (public endpoint)
+
+**Query Parameters:** None
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'GET' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/docs' \
+  -H 'accept: application/json'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+
+const response = await fetch(`${BASE_URL}/docs`);
+const data = await response.json();
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+
+response = requests.get(f'{BASE_URL}/docs')
+data = response.json()
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "repository": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon",
+  "main_documentation": {
+    "api_reference": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/API_DOCUMENTATION.md",
+    "quick_start": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/QUICK_START.md",
+    "data_sources": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/DATA_SOURCES.md",
+    "readme": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/README.md"
+  },
+  "code_examples": {
+    "javascript": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/javascript-example.js",
+    "python": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/python-example.py",
+    "curl": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/blob/main/examples/curl-examples.sh"
+  },
+  "raw_links": {
+    "api_reference": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/API_DOCUMENTATION.md",
+    "quick_start": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/QUICK_START.md",
+    "data_sources": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/DATA_SOURCES.md",
+    "readme": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/README.md",
+    "javascript": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/examples/javascript-example.js",
+    "python": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/examples/python-example.py",
+    "curl": "https://github.com/AbdulmalikAlayande/xano-ai-hackathon/raw/main/examples/curl-examples.sh"
+  },
+  "note": "Update the repository URL in the endpoint code to point to your actual GitHub repository"
+}
+```
+
+**Error Responses:** None (public endpoint, no authentication required)
+
+**Notes:**
+
+- This endpoint provides programmatic access to all documentation links
+- Useful for building documentation pages or developer portals
+- Returns both GitHub blob links (for viewing) and raw links (for direct file access)
+- No authentication required, making it easy to discover documentation
+
+---
+
+### POST /api_key/generate
+
+Generates a new API key for accessing the API. The generated key follows the format `nga_` + 32 random alphanumeric characters.
+
+**HTTP Method:** `POST`
+
+**Path:** `/api_key/generate`
+
+**Authentication:** Not required (public endpoint for key generation)
+
+**Request Body Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `user_email` | string (email) | No | Optional email address to associate with the API key |
+
+**Request Example (cURL):**
+
+```bash
+curl -X 'POST' \
+  'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public/api_key/generate' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "user_email": "user@example.com"
+  }'
+```
+
+**Request Example (JavaScript):**
+
+```javascript
+const BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public';
+
+// Generate API key with email
+const response = await fetch(`${BASE_URL}/api_key/generate`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  },
+  body: JSON.stringify({
+    user_email: 'user@example.com'
+  })
+});
+
+const data = await response.json();
+console.log('Your API key:', data.api_key);
+```
+
+**Request Example (Python):**
+
+```python
+import requests
+
+BASE_URL = 'https://xmlb-8xh6-ww1h.n7e.xano.io/api:public'
+
+# Generate API key with email
+response = requests.post(
+    f'{BASE_URL}/api_key/generate',
+    json={
+        'user_email': 'user@example.com'
+    },
+    headers={'Accept': 'application/json'}
+)
+
+data = response.json()
+print('Your API key:', data['api_key'])
+```
+
+**Success Response (200 OK):**
+
+```json
+{
+  "success": true,
+  "api_key": "nga_b6cf98a60bda43ba8cf54af9dbd87260",
+  "message": "API key generated successfully. Please save this key as it provides access to the API."
+}
+```
+
+**Error Responses:**
+
+- **400 Bad Request**: Invalid email format (if provided)
+  ```json
+  {
+    "code": "ERROR_CODE_INPUT_ERROR",
+    "message": "Invalid email format"
+  }
+  ```
+
+**Notes:**
+
+- **Important:** Save the API key immediately after generation - it cannot be retrieved later
+- API keys are active by default (`is_active: true`)
+- The key format is: `nga_` prefix + 32 random alphanumeric characters
+- Email is optional but recommended for key management
+- Each API key has its own rate limit (100 requests/hour)
+- Keys can be deactivated but not deleted (for audit purposes)
+
+**Security Best Practices:**
+
+- Never commit API keys to version control
+- Store keys securely (environment variables, secret managers)
+- Rotate keys periodically
+- Use different keys for different environments (dev, staging, production)
 
 ---
 
@@ -702,6 +972,34 @@ Amounts are returned as decimal numbers. Currency codes follow ISO 4217 standard
 6. **Use appropriate HTTP status codes** to determine response handling
 
 ---
+
+## Postman Collection
+
+A complete Postman collection is available for easy testing:
+
+- **Collection File:** [nigerian-fees-api.postman_collection.json](./examples/nigerian-fees-api.postman_collection.json)
+- **Environment File:** [nigerian-fees-api.postman_environment.json](./examples/nigerian-fees-api.postman_environment.json)
+
+### How to Import
+
+1. **Import Collection:**
+   - Open Postman
+   - Click "Import" button
+   - Select `nigerian-fees-api.postman_collection.json`
+   - Collection will appear in your workspace
+
+2. **Import Environment (Optional):**
+   - Click "Import" in Postman
+   - Select `nigerian-fees-api.postman_environment.json`
+   - Select the environment in the dropdown
+   - Update the `api_key` variable with your actual API key
+
+3. **Use the Collection:**
+   - All endpoints are pre-configured with example requests
+   - Environment variables (`{{base_url}}`, `{{api_key}}`) are ready to use
+   - Simply update the `api_key` variable and start testing
+
+The collection includes all 5 endpoints with proper authentication, query parameters, and descriptions.
 
 ## Support
 
