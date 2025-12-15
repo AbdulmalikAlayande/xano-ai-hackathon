@@ -13,13 +13,14 @@ query metadata verb=GET {
     var $api_key_value {
       value = $input.api_key
     }
-    
+  
     // If api_key starts with "Bearer ", extract the actual key
     conditional {
       if ($api_key_value != null && (($api_key_value|index:"Bearer ") == 0)) {
         var.update $api_key_value {
           value = $api_key_value|replace:"Bearer ":""
         }
+      
         var.update $api_key_value {
           value = $api_key_value|trim
         }
@@ -89,6 +90,12 @@ query metadata verb=GET {
       value = ($latest_fee != null) ? $latest_fee.updated_at : now
     }
   
+    // GitHub repository base URL
+    // TODO: Update this with your actual GitHub repository URL
+    var $github_base {
+      value = "https://github.com/yourusername/xano-ai-app"
+    }
+  
     // Build metadata response
     var $metadata {
       value = {
@@ -102,6 +109,18 @@ query metadata verb=GET {
         }
         last_database_update: $last_update
         generated_at        : now
+        documentation       : {
+          repository: $github_base
+          api_reference: $github_base ~ "/blob/main/API_DOCUMENTATION.md"
+          quick_start: $github_base ~ "/blob/main/QUICK_START.md"
+          data_sources: $github_base ~ "/blob/main/DATA_SOURCES.md"
+          readme: $github_base ~ "/blob/main/README.md"
+          examples: {
+            javascript: $github_base ~ "/blob/main/examples/javascript-example.js"
+            python: $github_base ~ "/blob/main/examples/python-example.py"
+            curl: $github_base ~ "/blob/main/examples/curl-examples.sh"
+          }
+        }
       }
     }
   }
