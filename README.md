@@ -101,9 +101,9 @@ contribution guidelines coming soon
 
 ## 📧 Support
 
-For issues, questions, or contributions, please refer to the project repository or contact the API maintainers.
+For issues, questions, or contributions, please refer to the project repository or contact the API maintainer at [alaabdulmalik03@gmail.com](mailto:alaabdulmalik03@gmail.com).
 
 ---
 
-**Last Updated:** December 2024
+**Last Updated:** December 2025
 
