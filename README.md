@@ -23,7 +23,7 @@ Ready-to-use code examples in multiple languages:
 - **[JavaScript Examples](./examples/javascript-example.js)** - Complete examples using Fetch API
 - **[Python Examples](./examples/python-example.py)** - Complete examples using requests library
 - **[cURL Examples](./examples/curl-examples.sh)** - Command-line examples for testing
-- **[Postman Collection](./examples/nigerian-fees-api.postman_collection.json)** - Import into Postman for easy testing
+- **[Postman Collection](https://www.postman.com/nigerian-government-public-utilities-fees-api/nigerian-government-public-utilities-fees-api/request/59lkmbo/nigerian-government-fees-api?action=share&creator=27138464&ctx=documentation&active-environment=27138464-797a6ea6-1b25-4670-9850-669bb0a8ed79)** - View and import online, or download [collection file](./examples/nigerian-fees-api.postman_collection.json)
 
 ## 🔑 Authentication
 

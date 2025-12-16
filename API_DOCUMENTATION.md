@@ -988,6 +988,7 @@ Amounts are returned as decimal numbers. Currency codes follow ISO 4217 standard
 
 A complete Postman collection is available for easy testing:
 
+- **🌐 Postman Web Collection:** [View and Import Online](https://www.postman.com/nigerian-government-public-utilities-fees-api/nigerian-government-public-utilities-fees-api/request/59lkmbo/nigerian-government-fees-api?action=share&creator=27138464&ctx=documentation&active-environment=27138464-797a6ea6-1b25-4670-9850-669bb0a8ed79)
 - **Collection File:** [nigerian-fees-api.postman_collection.json](./examples/nigerian-fees-api.postman_collection.json)
 - **Environment File:** [nigerian-fees-api.postman_environment.json](./examples/nigerian-fees-api.postman_environment.json)
 

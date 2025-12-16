@@ -439,6 +439,7 @@ Authorization: Bearer nga_b6cf98a60bda43ba8cf54af9dbd87260  // Headers not suppo
 - **Full API Documentation:** [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)
 - **Data Sources:** [DATA_SOURCES.md](./DATA_SOURCES.md)
 - **Code Examples:** See `examples/` directory
+- **Postman Collection:** [View and Import Online](https://www.postman.com/nigerian-government-public-utilities-fees-api/nigerian-government-public-utilities-fees-api/request/59lkmbo/nigerian-government-fees-api?action=share&creator=27138464&ctx=documentation&active-environment=27138464-797a6ea6-1b25-4670-9850-669bb0a8ed79)
 
 ---
 
