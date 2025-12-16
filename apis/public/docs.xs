@@ -36,7 +36,7 @@ query docs verb=GET {
           python: $github_base ~ "/raw/main/examples/python-example.py"
           curl: $github_base ~ "/raw/main/examples/curl-examples.sh"
         }
-        note              : "Update the repository URL in the endpoint code to point to your actual GitHub repository"
+        postman_collection: "https://www.postman.com/nigerian-government-public-utilities-fees-api/nigerian-government-public-utilities-fees-api/request/59lkmbo/nigerian-government-fees-api?action=share&creator=27138464&ctx=documentation&active-environment=27138464-797a6ea6-1b25-4670-9850-669bb0a8ed79"
       }
     }
   }

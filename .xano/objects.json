@@ -200,7 +200,7 @@
   {
     "id": 24,
     "path": "apis/public/docs.xs",
-    "status": "unchanged",
+    "status": "changed",
     "type": "api_endpoint",
     "staged": false,
     "sha256": "8741f208a9164d5e635287a27f359ca9aa1906acd88b34a86f4881f1e4255b52",
